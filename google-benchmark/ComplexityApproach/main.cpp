@@ -45,14 +45,31 @@ static void BM_ListReverse(benchmark::State& state) {
   state.SetComplexityN(state.range(0));
 }
 
+static void BM_Search(benchmark::State& state) {
+  std::vector<int> v;
+  v.reserve(state.range(0));
+  for (int i = 0 ; i < state.range(0) ; ++i) {
+    v.push_back(i);
+  }
+
+  for (auto _ : state) {
+    auto it = std::find(std::begin(v), std::end(v), state.range(0) / 3);
+    benchmark::DoNotOptimize(v);
+    benchmark::DoNotOptimize(it);
+    benchmark::ClobberMemory();
+  }
+
+  state.SetComplexityN(state.range(0));
+}
+
 BENCHMARK(BM_StringCompare)
     ->RangeMultiplier(2)->Range(1<<10, 1<<18)->Complexity(benchmark::oN);
 BENCHMARK(BM_BinarySearch)
     ->RangeMultiplier(2)->Range(1<<18, 1<<24)->Complexity(benchmark::oLogN);
 BENCHMARK(BM_ListReverse)
     ->RangeMultiplier(2)->Range(1<<10, 1<<18)->Complexity(benchmark::oN);
+BENCHMARK(BM_Search)
+    ->RangeMultiplier(2)->Range(1<<18, 1<<24)->Complexity(benchmark::oLogN);
 
-// BENCHMARK(BM_ListReverse)
-//     ->RangeMultiplier(2)->Range(1<<10, 1<<18)->Complexity(benchmark::oLogN);
 
 BENCHMARK_MAIN();
