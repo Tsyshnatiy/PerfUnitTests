@@ -28,10 +28,9 @@ auto doubleToStringConversionTest(int count)
 	std::vector<std::string> outNumbers;
 
 	std::iota(std::begin(inputNumbers), std::end(inputNumbers), 0.12345);
-	for (auto &num : inputNumbers)
-    {
+	for (auto &num : inputNumbers) {
 		outNumbers.push_back(std::to_string(num));
-    }
+  }
 	return outNumbers;
 }
 
